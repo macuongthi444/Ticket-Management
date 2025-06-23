@@ -1,12 +1,10 @@
 package com.example.ticket_management.activity.Other;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,11 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ticket_management.R;
 import com.example.ticket_management.activity.Auth.ChangePasswordActivity;
-import com.example.ticket_management.activity.BaseActivity;
+import com.example.ticket_management.activity.User.UpdateUserActivity;
 import com.example.ticket_management.DAO.AuthDAO;
 import com.example.ticket_management.DAO.UserDAO;
 
-public class OtherActivity extends BaseActivity {
+public class OtherActivity extends AppCompatActivity {
     private static final String TAG = "OtherActivity";
 
     private Button btn_dangxuat;
@@ -30,17 +28,14 @@ public class OtherActivity extends BaseActivity {
     private UserDAO userDAO;
     private String userId;
     private boolean isFinishing = false;
-    @Override
-    protected int getContentLayoutId() {
-        return R.layout.activity_khac;
-    }
 
     @Override
-    protected void initContent(View contentView) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_khac);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Khác");
-        }
+        Log.d(TAG, "onCreate: Bắt đầu khởi tạo Activity");
 
         // Ánh xạ view
         txtTen = findViewById(R.id.txt_ten_TCN);
@@ -68,7 +63,7 @@ public class OtherActivity extends BaseActivity {
         loadUserData();
 
         // Thiết lập sự kiện
-
+     
 
         btnChangePassword.setOnClickListener(v -> {
             Log.d(TAG, "Chuyển đến ChangePasswordActivity");
@@ -76,7 +71,12 @@ public class OtherActivity extends BaseActivity {
             startActivity(intent);
         });
 
-
+        btnUpdatePro.setOnClickListener(v -> {
+            Log.d(TAG, "Chuyển đến UpdateUserActivity với userId: " + userId);
+            Intent intent = new Intent(OtherActivity.this, UpdateUserActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
+        });
 
         btn_dangxuat.setOnClickListener(v -> {
             Log.d(TAG, "Nhấn nút Đăng xuất");
@@ -86,7 +86,12 @@ public class OtherActivity extends BaseActivity {
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: Làm mới dữ liệu người dùng");
+        loadUserData(); // Làm mới dữ liệu khi quay lại từ UpdateUserActivity
+    }
 
     @Override
     protected void onDestroy() {

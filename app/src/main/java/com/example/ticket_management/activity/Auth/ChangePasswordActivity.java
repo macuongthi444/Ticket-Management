@@ -1,7 +1,6 @@
 package com.example.ticket_management.activity.Auth;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -9,22 +8,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ticket_management.R;
-import com.example.ticket_management.activity.BaseActivity;
 import com.example.ticket_management.DAO.AuthDAO;
 import com.google.android.material.textfield.TextInputEditText;
 
-public class ChangePasswordActivity extends BaseActivity {
+public class ChangePasswordActivity extends AppCompatActivity {
     private AuthDAO authDAO;
-    @Override
-    protected int getContentLayoutId() {
-        return R.layout.activity_change_password;
-    }
 
     @Override
-    protected void initContent(View contentView) {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Đổi mật khẩu");
-        }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_change_password);
+
         authDAO = new AuthDAO();
 
         // Ánh xạ các thành phần giao diện
