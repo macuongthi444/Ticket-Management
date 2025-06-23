@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home"
+        android:title="Lịch chiếu"
+
+        />
+
+    <item
+        android:id="@+id/hoadon"
+        android:title="Hóa đơn"
+        />
+
+    <item
+        android:id="@+id/chatbot"
+        android:title="Chatbot"
+        />
+    <item
+        android:id="@+id/khac"
+        android:title="Khác"
+
+        />
+</menu>

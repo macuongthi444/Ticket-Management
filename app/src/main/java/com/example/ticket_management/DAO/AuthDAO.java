@@ -7,92 +7,43 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.ticket_management.activity.Auth.LoginActivity;
-import com.example.ticket_management.activity.Category.CategoryActivity;
 import com.example.ticket_management.activity.Other.OtherActivity;
-import com.example.ticket_management.activity.SelectionShowtimesActivity;
-import com.example.ticket_management.activity.ShowTime.ShowtimeUserListActivity;
-import com.example.ticket_management.activity.StatisticActivity;
 import com.example.ticket_management.config.FirebaseAuthManager;
 import com.example.ticket_management.model.User;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 public class AuthDAO {
     private final FirebaseAuth firebaseAuth;
 
     public AuthDAO() {
         firebaseAuth = FirebaseAuthManager.getInstance();
     }
-    public void registerUser(Context context, String email, String password, String fullName, String phone, String address, User user) {
-        if (password.length() < 6) {
-            Toast.makeText(context, "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    public void registerUser(Context context, String email, String password, String fullName, String phone,String address,  User user) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        user.setUserId(firebaseUser.getUid());
+                        user.setEmail(email);
+                        user.setFullName(fullName);
+                        user.setPhone(phone);
+                        user.setAddress(address);
+                        user.setRole(0);
 
-        if (!phone.matches("\\d{10}")) {
-            Toast.makeText(context, "Số điện thoại phải có đúng 10 số", Toast.LENGTH_SHORT).show();
-            return;
-        }
+                        // Lưu trữ thông tin người dùng vào Realtime Database
+                        UserDAO userDAO = new UserDAO();
+                        userDAO.addUser(user);
 
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-
-        usersRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot emailSnapshot) {
-                usersRef.orderByChild("phone").equalTo(phone).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot phoneSnapshot) {
-                        if (emailSnapshot.exists() || phoneSnapshot.exists()) {
-                            Toast.makeText(context, "Email hoặc số điện thoại đã được đăng ký!", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                        user.setUserId(firebaseUser.getUid());
-                                        user.setEmail(email);
-                                        user.setFullName(fullName);
-                                        user.setPhone(phone);
-                                        user.setAddress(address);
-                                        user.setRole(0);
-
-                                        UserDAO userDAO = new UserDAO();
-                                        userDAO.addUser(user);
-
-                                        Toast.makeText(context, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(context, LoginActivity.class);
-                                        context.startActivity(intent);
-                                    } else {
-                                        Toast.makeText(context, "Đăng ký thất bại: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(context, "Lỗi kết nối đến Firebase!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        context.startActivity(intent);
+                    } else {
+                        Toast.makeText(context, "Đăng ký thất bại: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(context, "Lỗi kết nối đến Firebase!", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
-
 
 
     public void loginUser(Context context, String email, String password) {
@@ -120,16 +71,12 @@ public class AuthDAO {
                                     editor.putInt("role", user.getRole());
                                     editor.apply(); // Lưu thay đổi
 
-                                    Log.d("AuthDAO", "Role saved: " + user.getRole());
+
 
                                     Toast.makeText(context, "Xin chào: " + user.getFullName(), Toast.LENGTH_SHORT).show();
 
-                                    Intent intent;
-                                    if (user.getRole() == 1) { // Role = 1 (admin) -> CategoryActivity
-                                        intent = new Intent(context, StatisticActivity.class);
-                                    } else { // Role = 0 (user) -> ShowListActivity
-                                        intent = new Intent(context, ShowtimeUserListActivity.class);
-                                    }
+                                    // Chuyển đến màn hình chính
+                                    Intent intent = new Intent(context, OtherActivity.class);
                                     context.startActivity(intent);
                                 } else {
                                     Toast.makeText(context, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
@@ -137,21 +84,10 @@ public class AuthDAO {
                             });
                         }
                     } else {
-                        String errorMessage;
-                        try {
-                            throw task.getException();
-                        } catch (FirebaseAuthInvalidUserException e) {
-                            errorMessage = "Tài khoản không tồn tại hoặc đã bị vô hiệu hóa.";
-                        } catch (FirebaseAuthInvalidCredentialsException e) {
-                            errorMessage = "Email hoặc mật khẩu không chính xác.";
-                        } catch (Exception e) {
-                            errorMessage = "Đăng nhập thất bại: " + e.getMessage();
-                        }
-                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Đăng nhập thất bại: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-
 
     public void changePassword(Context context, String oldPassword, String newPassword, String confirmPassword) {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
@@ -251,35 +187,17 @@ public class AuthDAO {
     }
 
     public void sendPasswordResetEmail(Context context, String email) {
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-
-        usersRef.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (!snapshot.exists()) {
-                    Toast.makeText(context, "Email chưa được đăng ký trong hệ thống!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                firebaseAuth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(context, "Email đặt lại mật khẩu đã được gửi", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(context, LoginActivity.class);
-                                context.startActivity(intent);
-                            } else {
-                                Toast.makeText(context, "Lỗi khi gửi email đặt lại mật khẩu: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(context, "Lỗi kết nối đến Firebase!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        firebaseAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Email đặt lại mật khẩu đã được gửi", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        context.startActivity(intent);
+                    } else {
+                        Toast.makeText(context, "Lỗi khi gửi email đặt lại mật khẩu: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
-
 
 
 
@@ -287,3 +205,4 @@ public class AuthDAO {
         return firebaseAuth.getCurrentUser();
     }
 }
+

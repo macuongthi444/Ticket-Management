@@ -1,6 +1,5 @@
 package com.example.ticket_management.activity.Auth;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +23,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+
+
         edtEmail = findViewById(R.id.edt_email);
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
