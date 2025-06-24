@@ -3,11 +3,14 @@ package com.example.ticket_management.DAO;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.health.connect.datatypes.MealType;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.Toast;
 
 import com.example.ticket_management.activity.Auth.LoginActivity;
 import com.example.ticket_management.activity.Other.OtherActivity;
+import com.example.ticket_management.activity.MenuActivity;
 import com.example.ticket_management.config.FirebaseAuthManager;
 import com.example.ticket_management.model.User;
 import com.google.firebase.auth.AuthCredential;
@@ -76,7 +79,12 @@ public class AuthDAO {
                                     Toast.makeText(context, "Xin chào: " + user.getFullName(), Toast.LENGTH_SHORT).show();
 
                                     // Chuyển đến màn hình chính
-                                    Intent intent = new Intent(context, OtherActivity.class);
+                                    Intent intent;
+                                    if (user.getRole() == 1) { // Role = 1 (admin) -> CategoryActivity
+                                        intent = new Intent(context, MenuActivity.class);
+                                    } else { // Role = 0 (user) -> ShowListActivity
+                                        intent = new Intent(context, OtherActivity.class);
+                                    }
                                     context.startActivity(intent);
                                 } else {
                                     Toast.makeText(context, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
