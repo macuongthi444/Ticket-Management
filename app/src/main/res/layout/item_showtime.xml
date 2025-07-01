@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvShowtimeFilm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên phim"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="#1976D2" />
+
+        <TextView
+            android:id="@+id/tvShowtimeRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phòng"
+            android:textSize="15sp"
+            android:textColor="#444" />
+
+        <TextView
+            android:id="@+id/tvShowtimeTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thời gian"
+            android:textSize="15sp"
+            android:textColor="#444" />
+
+        <TextView
+            android:id="@+id/tvShowtimePrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giá vé"
+            android:textSize="15sp"
+            android:textColor="#444" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="8dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditShowtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sửa"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:textColor="#1976D2" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteShowtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xóa"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:textColor="#D32F2F"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView> 
