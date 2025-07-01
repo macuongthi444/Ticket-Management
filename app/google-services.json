@@ -1,14 +1,14 @@
 {
   "project_info": {
-    "project_number": "166000847034",
-    "firebase_url": "https://ticket-management-a1135-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "ticket-management-a1135",
-    "storage_bucket": "ticket-management-a1135.firebasestorage.app"
+    "project_number": "542834337154",
+    "firebase_url": "https://tickets-app-c7e04-default-rtdb.firebaseio.com",
+    "project_id": "tickets-app-c7e04",
+    "storage_bucket": "tickets-app-c7e04.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:166000847034:android:c1a1b690ed0eb548ae3a83",
+        "mobilesdk_app_id": "1:542834337154:android:fbf7ab5e69af751c6a9b9b",
         "android_client_info": {
           "package_name": "com.example.ticket_management"
         }
@@ -16,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDL20YsmpZCh72rDkNfv3yGUNb_hIggbE8"
+          "current_key": "AIzaSyDZDmsPn_G6bVbc-TA2TYZ-NMMcSAV2qds"
         }
       ],
       "services": {
