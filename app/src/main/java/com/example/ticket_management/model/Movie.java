@@ -19,7 +19,8 @@ public class Movie implements Serializable {
     String director;
     Date releaseDate;
     String description;
-    String poster;
+    String imageBase64;
+
     int ticketsSold;
     float averageRating;
     int revenue;
