@@ -41,6 +41,12 @@
         <activity
             android:name=".activity.MenuActivity"
             android:exported="false"/>
+        <activity
+            android:name=".activity.Category.CategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Category.AddCategoryActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
