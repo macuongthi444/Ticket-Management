@@ -147,7 +147,7 @@
                     android:hint="Nhập lại mật khẩu"
                     app:boxStrokeColor="#000000"
                     app:hintTextColor="#000000"
-                    app:password_toggle_enabled="true">
+                    >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edt_repassword"
