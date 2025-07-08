@@ -1,194 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp">
+    android:background="#F5F7FA">
 
-    <!-- Profile Section -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- Header with User Avatar -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_header"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- User Image and Name -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="24dp">
 
-            <ImageView
+            <!-- User Avatar -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_user"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_user"
-                android:layout_marginBottom="8dp"
-                />
+                android:contentDescription="User avatar"
+                android:scaleType="centerCrop" />
 
-
-
+            <!-- User Name -->
             <TextView
                 android:id="@+id/txt_ten_TCN"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="hoang"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:text="Hoang"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:layout_marginTop="8dp" />
+                android:textColor="#212121" />
         </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-        <!-- Name, Phone, Email Section -->
+    <!-- User Info Section -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/card_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <!-- Email Section -->
+            <!-- Email -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:paddingVertical="8dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Email"
-                    android:textSize="16sp"
-                    android:textColor="#757575" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_email"
+                    android:contentDescription="Email icon"
+                     />
 
-                <TextView
-                    android:id="@+id/txt_email_TCN"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="j@example.com"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:paddingHorizontal="8dp"
-                    android:gravity="center" />
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/label_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textSize="14sp"
+                        android:textColor="#757575" />
+
+                    <TextView
+                        android:id="@+id/txt_email_TCN"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="j@example.com"
+                        android:textSize="16sp"
+                        android:textColor="#212121"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- Phone Section -->
+            <!-- Phone -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:paddingVertical="8dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_phone"
+                    android:contentDescription="Phone icon"
+                     />
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Số điện thoại"
-                    android:textSize="16sp"
-                    android:textColor="#757575" />
-                <TextView
-                    android:id="@+id/txt_SDT_TCN"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="092345612"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/label_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số điện thoại"
+                        android:textSize="14sp"
+                        android:textColor="#757575" />
+
+                    <TextView
+                        android:id="@+id/txt_SDT_TCN"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="092345612"
+                        android:textSize="16sp"
+                        android:textColor="#212121" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-        <!-- Grid Menu Section -->
-        <GridLayout
+    <!-- Menu Section -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_menu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/card_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:padding="8dp"
-            android:columnCount="2"
-            android:rowCount="1">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <!-- Item 1: Hóa đơn -->
+            <!-- Update Profile -->
             <LinearLayout
                 android:id="@+id/btn_updateprofile"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="#C1D2D2ED"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true">
 
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:src="@drawable/ic_profile"
-                    android:padding="10dp" />
+                    android:contentDescription="Update profile" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:text="Cập nhật thông tin"
                     android:textSize="16sp"
-                    android:textColor="#757575"
-                    android:gravity="center"
-                    android:layout_marginTop="10dp" />
+                    android:textColor="#212121" />
             </LinearLayout>
 
-            <!-- Item 2: Đổi mật khẩu -->
+            <!-- Change Password -->
             <LinearLayout
                 android:id="@+id/btn_change_password"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp"
-                android:layout_marginStart="8dp"
-                android:background="#C1D2D2ED"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true">
 
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:src="@drawable/changepassword"
-                    android:padding="10dp" />
+                    android:contentDescription="Change password"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:text="Đổi mật khẩu"
                     android:textSize="16sp"
-                    android:textColor="#757575"
-                    android:gravity="center"
-                    android:layout_marginTop="10dp" />
+                    android:textColor="#212121" />
             </LinearLayout>
-        </GridLayout>
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:padding="8dp"
-            android:columnCount="2"
-            android:rowCount="1">
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
+    <!-- Logout Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_DangXuat"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="24dp"
+        android:text="Đăng Xuất"
+        android:textSize="16sp"
+        app:strokeColor="#FF5252"
+        app:strokeWidth="2dp"
+        android:textColor="#FF5252"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        </GridLayout>
-
-        <!-- Logout Button -->
-        <Button
-            android:id="@+id/btn_DangXuat"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="100dp"
-            android:background="#00695C"
-            android:text="Đăng Xuất"
-            android:textColor="#000000"
-            android:textSize="19sp" />
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
