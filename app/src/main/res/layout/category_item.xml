@@ -11,7 +11,7 @@
         android:id="@+id/imgCategory"
         android:layout_width="60dp"
         android:layout_height="60dp"
-
+        android:src="@drawable/ic_category"
         android:contentDescription="Category Icon"
         android:layout_gravity="center_vertical" />
 
