@@ -4,41 +4,34 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/suatChieu"
 
-            android:title="Quản lý suất chiếu"/>
         <item
             android:id="@+id/Category"
             android:title="Quản lý thể loại phim "
-
+            android:icon="@drawable/ic_category"
             />
         <item
-
             android:id="@+id/MovieList"
             android:title="Quản lý Phim"
+            android:icon="@drawable/ic_movie"
             />
         <item
-
             android:id="@+id/Phong"
             android:title="Quản lý Phòng"
+            android:icon="@drawable/ic_room"
+            />
+        <item
+            android:id="@+id/suatChieu"
+            android:title="Quản lý suất chiếu"
+            android:icon="@drawable/ic_suatchieu"/>
+        <item
+            android:id="@+id/TKDT"
+            android:title="Doanh thu "
+            />
+
+        <item
+            android:id="@+id/Logout"
+            android:title="Đăng xuất "
             />
     </group>
-
-    <item android:id="@+id/ThongKe"
-        android:title="Thống kê">
-        <menu>
-            <item
-                android:id="@+id/TKDT"
-                android:title="Doanh thu "
-               />
-
-            <item
-                android:id="@+id/Logout"
-                android:title="Đăng xuất "
-                />
-        </menu>
-
-
-    </item>
 </menu>
