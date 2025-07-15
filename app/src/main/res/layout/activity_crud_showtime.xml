@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="#E1F5FE">
 
+    <!-- Nội dung chính -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- Tiêu đề -->
         <TextView
             android:id="@+id/tvTitleShowtime"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Quản lý Lịch Chiếu"
+            android:textAlignment="center"
+            android:textColor="#01579B"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="#222"
-            android:layout_gravity="center_horizontal"
-            android:paddingBottom="12dp" />
+            android:layout_marginBottom="16dp" />
 
+        <!-- Danh sách lịch chiếu -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvShowtimeList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingBottom="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:clipToPadding="false"
+            android:paddingBottom="80dp"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </LinearLayout>
 
+    <!-- Nút thêm lịch chiếu -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddShowtime"
         android:layout_width="wrap_content"
@@ -38,7 +46,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
         android:contentDescription="Thêm suất chiếu"
-        app:srcCompat="@android:drawable/ic_input_add"
-        app:backgroundTint="#1976D2" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout> 
+        app:backgroundTint="#039BE5"
+        app:tint="@android:color/white"
+        app:elevation="8dp"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

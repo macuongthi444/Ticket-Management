@@ -3,42 +3,49 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#E1F5FE">
 
+    <!-- Nội dung chính -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:padding="16dp">
+        android:padding="20dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- Tiêu đề -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:text="Thể Loại Phim"
             android:textAlignment="center"
-            android:textColor="#212121"
+            android:textColor="#01579B"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
 
+        <!-- Danh sách -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewCategories"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp"
+            android:scrollbars="vertical"/>
     </LinearLayout>
 
-    <!-- Thêm FloatingActionButton -->
+    <!-- Nút Thêm mới -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#ffffff"
-        app:elevation="6dp"
-        android:contentDescription="Add Category" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
 
+        android:contentDescription="Thêm thể loại"
+        app:backgroundTint="#039BE5"
+        app:tint="@android:color/white"
+        app:elevation="8dp"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

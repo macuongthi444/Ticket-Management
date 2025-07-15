@@ -227,7 +227,6 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Logout Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_DangXuat"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -237,12 +236,11 @@
         android:layout_marginBottom="24dp"
         android:text="Đăng Xuất"
         android:textSize="16sp"
-        app:strokeColor="#FF5252"
+        app:strokeColor="#F57C00"
         app:strokeWidth="2dp"
-        android:textColor="#FF5252"
+        android:textColor="#F57C00"
         app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
