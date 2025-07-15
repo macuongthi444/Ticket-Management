@@ -23,6 +23,7 @@ import com.example.ticket_management.R;
 import com.example.ticket_management.activity.Category.CategoryActivity;
 import com.example.ticket_management.activity.Movie.MovieListActivity;
 import com.example.ticket_management.activity.Other.OtherActivity;
+import com.example.ticket_management.activity.Room.RoomListActivity;
 import com.example.ticket_management.DAO.AuthDAO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -170,7 +171,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             openActivity(CategoryActivity.class);
         } else if (id == R.id.MovieList) {
             openActivity(MovieListActivity.class);
-        } else
+        } else if (id == R.id.Phong) {
+            openActivity(RoomListActivity.class);
+        }
 //            if (id == R.id.TKDT) {
 //            openActivity(StatisticActivity.class);
 //        } else
