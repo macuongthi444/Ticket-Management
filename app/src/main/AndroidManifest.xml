@@ -56,6 +56,15 @@
         <activity
             android:name=".activity.Movie.MovieListActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.Room.RoomAdditionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Room.RoomListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Room.UpdateRoomActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
