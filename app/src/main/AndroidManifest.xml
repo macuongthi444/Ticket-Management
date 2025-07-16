@@ -65,6 +65,12 @@
         <activity
             android:name=".activity.Room.UpdateRoomActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.ShowTime.ShowTimeListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ShowTime.AddShowTimeActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
