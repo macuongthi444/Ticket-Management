@@ -30,9 +30,10 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
+            android:background="@drawable/ic_img"
             android:contentDescription="Poster Preview"
             android:layout_marginBottom="16dp"
-            android:background="@android:color/darker_gray" />
+             />
 
         <!-- Nút chọn ảnh -->
         <com.google.android.material.button.MaterialButton
@@ -99,7 +100,6 @@
             android:text="Ngày phát hành (dd/MM/yyyy)"
             android:textColor="#000000"
             android:padding="12dp"
-            android:background="@drawable/ic_img"
             android:layout_marginBottom="12dp" />
 
         <!-- Spinner Thể loại -->
