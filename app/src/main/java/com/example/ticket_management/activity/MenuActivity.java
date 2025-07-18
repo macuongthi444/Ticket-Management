@@ -13,6 +13,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.ticket_management.R;
 import com.example.ticket_management.activity.Category.CategoryActivity;
 import com.example.ticket_management.activity.Movie.MovieListActivity;
+import com.example.ticket_management.activity.ShowTime.ShowTimeListActivity;
+import com.example.ticket_management.activity.Room.RoomListActivity;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -59,6 +62,12 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
             openActivity(CategoryActivity.class);
         } else if (id == R.id.MovieList) {
             openActivity(MovieListActivity.class);
+        }
+        else if (id == R.id.suatChieu) {
+            openActivity(ShowTimeListActivity.class);
+        }
+        else if (id == R.id.Phong) {
+            openActivity(RoomListActivity.class);
         }
 
         drawerLayout.closeDrawers();
