@@ -3,31 +3,27 @@ package com.example.ticket_management.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.ticket_management.R;
+import com.example.ticket_management.DAO.AuthDAO;
 import com.example.ticket_management.activity.Category.CategoryActivity;
 import com.example.ticket_management.activity.Movie.MovieListActivity;
 import com.example.ticket_management.activity.Other.OtherActivity;
 import com.example.ticket_management.activity.Room.RoomListActivity;
 import com.example.ticket_management.activity.ShowTime.ShowTimeListActivity;
 import com.example.ticket_management.activity.ShowTime.ShowtimeUserListActivity;
-
-import com.example.ticket_management.DAO.AuthDAO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -62,6 +58,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
         // Tìm FrameLayout frmHienthi
         FrameLayout frmHienthi = findViewById(R.id.frmHienthi);
+        if (frmHienthi == null) {
+            Log.e("BaseActivity", "FrameLayout frmHienthi is null, check layout ID");
+            finish();
+            return;
+        }
 
         // Inflate layout nội dung của Activity con
         View contentView = getLayoutInflater().inflate(getContentLayoutId(), frmHienthi, false);
@@ -120,8 +121,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             TextView tvEmail = headerView.findViewById(R.id.tv_email);
 
             // Hiển thị thông tin
-            tvFullName.setText("Xin chào, " + fullName);
-            tvEmail.setText(email);
+            if (tvFullName != null) {
+                tvFullName.setText("Xin chào, " + fullName);
+            }
+            if (tvEmail != null) {
+                tvEmail.setText(email);
+            }
         }
     }
 
@@ -129,11 +134,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private int getSelectedItemIdForCurrentActivity() {
         if (this instanceof ShowtimeUserListActivity) {
             return R.id.home; // Tab "Lịch Chiếu"
-        } else
-//            if (this instanceof TransactionHistoryActivity) {
-//            return R.id.hoadon; // Tab "Hóa Đơn"
-//        } else
-            if (this instanceof OtherActivity) {
+        } else if (this instanceof TransactionHistoryActivity) {
+            return R.id.hoadon; // Tab "Hóa Đơn"
+        } else if (this instanceof OtherActivity) {
             return R.id.khac; // Tab "Khác"
         }
         return R.id.home; // Mặc định là "Lịch Chiếu"
@@ -145,9 +148,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         setSupportActionBar(toolbar);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.btnNavigation);
+        if (bottomNavigationView == null) {
+            Log.e("BaseActivity", "BottomNavigationView is null, check layout ID");
+            return;
+        }
 
         // Đặt tab được chọn dựa trên Activity hiện tại
-//        bottomNavigationView.setSelectedItemId(getSelectedItemIdForCurrentActivity());
+        bottomNavigationView.setSelectedItemId(getSelectedItemIdForCurrentActivity());
 
         // Xử lý sự kiện khi người dùng nhấn vào tab
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -161,11 +168,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
             if (id == R.id.home) {
                 openActivity(ShowtimeUserListActivity.class);
-            } else
-//                if (id == R.id.hoadon) {
-//                openActivity(TransactionHistoryActivity.class);
-//            } else
-                if (id == R.id.khac) {
+            } else if (id == R.id.hoadon) {
+                openActivity(TransactionHistoryActivity.class);
+            } else if (id == R.id.khac) {
                 openActivity(OtherActivity.class);
             }
 
@@ -184,18 +189,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             openActivity(MovieListActivity.class);
         } else if (id == R.id.Phong) {
             openActivity(RoomListActivity.class);
-        }else if(id == R.id.suatChieu){
+        } else if (id == R.id.suatChieu) {
             openActivity(ShowTimeListActivity.class);
-        }
-//            if (id == R.id.TKDT) {
-//            openActivity(StatisticActivity.class);
-//        } else
-            if (id == R.id.Logout) {
-            AuthDAO authDAO = new AuthDAO();
+        } else if (id == R.id.Logout) {
             authDAO.logout(BaseActivity.this);
         }
 
-        drawerLayout.closeDrawers();
+        if (drawerLayout != null) {
+            drawerLayout.closeDrawers();
+        }
         return true;
     }
 

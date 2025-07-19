@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Set;
 
 public class SeatSelectionActivity extends AppCompatActivity implements SeatAdapter.OnSeatClickListener {
-
     private RecyclerView recyclerView;
     private TextView selectedSeatsText;
     private TextView totalPriceText;
@@ -51,76 +50,88 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
     private String poster;
     private String roomID;
     private CountDownTimer countDownTimer;
-    private static final long SEAT_SELECTION_TIMEOUT = 5 * 60 * 1000; // 5 phút (300 giây)
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_seat_selection);
-//
-//        // Nhận dữ liệu từ Intent
-//        movieID = getIntent().getStringExtra("movieID");
-//        showDate = getIntent().getStringExtra("showDate");
-//        showTime = getIntent().getStringExtra("showTime");
-//        poster = getIntent().getStringExtra("poster");
-//        roomID = getIntent().getStringExtra("roomID");
-//
-//        recyclerView = findViewById(R.id.seat_grid);
-//        selectedSeatsText = findViewById(R.id.selected_seats);
-//        totalPriceText = findViewById(R.id.total_price);
-//        timeRemainingText = findViewById(R.id.time_remaining);
-//        continueButton = findViewById(R.id.btn_continue);
-//        movieBackground = findViewById(R.id.movie_background);
-//
-//        // Hiển thị poster
-//        if (poster != null && !poster.isEmpty()) {
-//            Glide.with(this).load(poster).into(movieBackground);
-//        } else {
-//            movieBackground.setImageResource(R.drawable.img_background);
-//            Log.e("SeatSelection", "Poster URL is null or empty");
-//        }
-//
-//        // Khởi tạo Firebase
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        seatsRef = database.getReference("seats");
-//
-//        // Khởi tạo danh sách ghế
-//        seatList = new ArrayList<>();
-//
-//        // Cấu hình RecyclerView
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 10);
-//        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-//            @Override
-//            public int getSpanSize(int position) {
-//                Seat seat = seatList.get(position);
-//                return (seat.getRow() == 'I' || seat.getRow() == 'J') ? 2 : 1;
-//            }
-//        });
-//        recyclerView.setLayoutManager(gridLayoutManager);
-//        recyclerView.setNestedScrollingEnabled(false);
-//        seatAdapter = new SeatAdapter(seatList, this);
-//        recyclerView.setAdapter(seatAdapter);
-//
-//        // Lấy dữ liệu từ Firebase
-//        loadSeatsFromFirebase();
-//
-//        // Xử lý sự kiện nhấn nút Tiếp tục
-//        continueButton.setOnClickListener(v -> {
-//            List<String> selectedSeats = getSelectedSeats();
-//            if (selectedSeats.isEmpty()) {
-//                Toast.makeText(SeatSelectionActivity.this, "Vui lòng chọn ít nhất một ghế!", Toast.LENGTH_SHORT).show();
-//            } else {
-//                showAgeConfirmationDialog(selectedSeats);
-//            }
-//        });
-//
-//        // Bắt đầu đếm ngược 5 phút
-//        startTimer();
-//    }
+    private static final long SEAT_SELECTION_TIMEOUT = 5 * 60 * 1000; // 5 phút
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_seat_selection);
+
+        // Nhận dữ liệu từ Intent
+        movieID = getIntent().getStringExtra("movieID");
+        showDate = getIntent().getStringExtra("showDate");
+        showTime = getIntent().getStringExtra("showTime");
+        poster = getIntent().getStringExtra("poster");
+        roomID = getIntent().getStringExtra("roomID");
+
+        // Kiểm tra Intent extras
+        if (movieID == null || showDate == null || showTime == null || roomID == null) {
+            Log.e("SeatSelectionActivity", "Missing required intent extras");
+            Toast.makeText(this, "Dữ liệu suất chiếu không đầy đủ.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+        // Khởi tạo views
+        recyclerView = findViewById(R.id.seat_grid);
+        selectedSeatsText = findViewById(R.id.selected_seats);
+        totalPriceText = findViewById(R.id.total_price);
+        timeRemainingText = findViewById(R.id.time_remaining);
+        continueButton = findViewById(R.id.btn_continue);
+        movieBackground = findViewById(R.id.movie_background);
+
+        // Hiển thị poster
+        if (poster != null && !poster.isEmpty()) {
+            Glide.with(this).load(poster).error(R.drawable.img_background).into(movieBackground);
+        } else {
+            movieBackground.setImageResource(R.drawable.img_background);
+            Log.e("SeatSelectionActivity", "Poster URL is null or empty");
+        }
+
+        // Khởi tạo Firebase
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        seatsRef = database.getReference("seats");
+
+        // Khởi tạo danh sách ghế
+        seatList = new ArrayList<>();
+
+        // Cấu hình RecyclerView
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 10);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (seatList == null || position >= seatList.size()) {
+                    return 1;
+                }
+                Seat seat = seatList.get(position);
+                return (seat.getRow() == 'I' || seat.getRow() == 'J') ? 2 : 1;
+            }
+        });
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
+        seatAdapter = new SeatAdapter(seatList, this);
+        recyclerView.setAdapter(seatAdapter);
+
+        // Lấy dữ liệu từ Firebase
+        loadSeatsFromFirebase();
+
+        // Xử lý sự kiện nhấn nút Tiếp tục
+        continueButton.setOnClickListener(v -> {
+            List<String> selectedSeats = getSelectedSeats();
+            if (selectedSeats.isEmpty()) {
+                Toast.makeText(SeatSelectionActivity.this, "Vui lòng chọn ít nhất một ghế!", Toast.LENGTH_SHORT).show();
+            } else {
+                showAgeConfirmationDialog(selectedSeats);
+            }
+        });
+
+        // Bắt đầu đếm ngược 5 phút
+        startTimer();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Khi quay lại activity, xóa các ghế đang chọn và reset thời gian
         clearSelectedSeats();
         startTimer();
     }
@@ -128,7 +139,6 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
     @Override
     protected void onPause() {
         super.onPause();
-        // Hủy đếm ngược khi activity không còn hiển thị
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
@@ -137,7 +147,6 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Hủy đếm ngược khi activity bị hủy
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
@@ -145,18 +154,15 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
 
     @Override
     public void onBackPressed() {
-        // Xóa các ghế đang chọn trước khi quay lại trang trước
         clearSelectedSeats();
-        super.onBackPressed(); // Tiếp tục hành động back mặc định
+        super.onBackPressed();
     }
 
     private void startTimer() {
-        // Hủy đếm ngược cũ nếu có
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
 
-        // Bắt đầu đếm ngược 5 phút
         countDownTimer = new CountDownTimer(SEAT_SELECTION_TIMEOUT, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -170,7 +176,6 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
                 timeRemainingText.setText("Thời gian còn lại: 00:00");
                 Toast.makeText(SeatSelectionActivity.this, "Hết thời gian! Vui lòng chọn lại suất chiếu.", Toast.LENGTH_LONG).show();
                 clearSelectedSeats();
-                // Quay lại SelectionShowtimesActivity
                 Intent intent = new Intent(SeatSelectionActivity.this, SelectionShowtimesActivity.class);
                 intent.putExtra("movieID", movieID);
                 startActivity(intent);
@@ -180,21 +185,29 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
     }
 
     private void clearSelectedSeats() {
-        // Đặt lại trạng thái của các ghế "selected" về "empty"
+        if (seatList == null) {
+            Log.e("SeatSelectionActivity", "seatList is null in clearSelectedSeats");
+            seatList = new ArrayList<>();
+        }
         for (Seat seat : seatList) {
             if (seat.getStatus().equals("selected")) {
                 seat.setStatus("empty");
                 updateSeatInFirebase(seat);
             }
         }
-        seatAdapter.notifyDataSetChanged();
+        if (seatAdapter != null) {
+            seatAdapter.notifyDataSetChanged();
+        } else {
+            Log.w("SeatSelectionActivity", "seatAdapter is null, cannot notifyDataSetChanged");
+        }
         updateTotalPrice();
     }
 
     private void loadSeatsFromFirebase() {
         if (roomID == null || showDate == null || showTime == null) {
-            Log.e("SeatSelection", "Thông tin không hợp lệ: roomID, showDate hoặc showTime là null");
+            Log.e("SeatSelectionActivity", "Thông tin không hợp lệ: roomID, showDate hoặc showTime là null");
             Toast.makeText(this, "Thông tin suất chiếu không hợp lệ", Toast.LENGTH_LONG).show();
+            finish();
             return;
         }
 
@@ -203,7 +216,7 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
                 .child(showDate)
                 .child(showTime);
 
-        Log.d("SeatSelection", "Truy vấn ghế: roomID=" + roomID + ", showDate=" + showDate + ", showTime=" + showTime);
+        Log.d("SeatSelectionActivity", "Truy vấn ghế: roomID=" + roomID + ", showDate=" + showDate + ", showTime=" + showTime);
 
         specificSeatsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -220,7 +233,7 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String seatId = snapshot.getKey();
                     if (seatId == null || seatId.equals("showtimeId")) {
-                        continue; // Bỏ qua node showtimeId
+                        continue;
                     }
 
                     String row = snapshot.child("row").getValue(String.class);
@@ -236,7 +249,6 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
                     }
                 }
 
-                // Sắp xếp seatList theo row và number
                 Collections.sort(seatList, (seat1, seat2) -> {
                     int rowCompare = Character.compare(seat1.getRow(), seat2.getRow());
                     if (rowCompare != 0) {
@@ -245,7 +257,9 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
                     return Integer.compare(seat1.getNumber(), seat2.getNumber());
                 });
 
-                seatAdapter.notifyDataSetChanged();
+                if (seatAdapter != null) {
+                    seatAdapter.notifyDataSetChanged();
+                }
                 updateTotalPrice();
                 Log.d("Firebase", "Loaded " + seatList.size() + " seats");
             }
@@ -260,7 +274,7 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
 
     private void initializeDefaultSeatsIfEmpty() {
         if (roomID == null || showDate == null || showTime == null) {
-            Log.e("SeatSelection", "Không thể tạo dữ liệu ghế mặc định: roomID, showDate hoặc showTime là null");
+            Log.e("SeatSelectionActivity", "Không thể tạo dữ liệu ghế mặc định: roomID, showDate hoặc showTime là null");
             return;
         }
 
@@ -273,23 +287,14 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
             if (task.isSuccessful() && !task.getResult().exists()) {
                 char[] rows = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
                 List<String> soldSeats = new ArrayList<>();
-
                 List<String> selectedSeats = new ArrayList<>();
 
                 for (char row : rows) {
                     if (row != 'I' && row != 'J') {
                         for (int num = 1; num <= 10; num++) {
                             int price = (row == 'A' || row == 'B' || row == 'C') ? 65000 : 70000;
-                            String status;
-
-                            String seatLabel = row + String.valueOf(num);
-                            if (soldSeats.contains(seatLabel)) {
-                                status = "sold";
-                            } else if (selectedSeats.contains(seatLabel)) {
-                                status = "selected";
-                            } else {
-                                status = "empty";
-                            }
+                            String status = soldSeats.contains(row + String.valueOf(num)) ? "sold" :
+                                    selectedSeats.contains(row + String.valueOf(num)) ? "selected" : "empty";
 
                             String seatId = row + String.valueOf(num);
                             specificSeatsRef.child(seatId).child("row").setValue(String.valueOf(row));
@@ -300,16 +305,8 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
                     } else {
                         for (int num = 1; num <= 5; num++) {
                             int price = 140000;
-                            String status;
-
-                            String seatLabel = row + String.valueOf(num);
-                            if (soldSeats.contains(seatLabel)) {
-                                status = "sold";
-                            } else if (selectedSeats.contains(seatLabel)) {
-                                status = "selected";
-                            } else {
-                                status = "empty";
-                            }
+                            String status = soldSeats.contains(row + String.valueOf(num)) ? "sold" :
+                                    selectedSeats.contains(row + String.valueOf(num)) ? "selected" : "empty";
 
                             String seatId = row + String.valueOf(num);
                             specificSeatsRef.child(seatId).child("row").setValue(String.valueOf(row));
@@ -320,9 +317,9 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
                     }
                 }
                 Toast.makeText(SeatSelectionActivity.this, "Đã tạo dữ liệu ghế mặc định", Toast.LENGTH_SHORT).show();
-                Log.d("SeatSelection", "Đã tạo dữ liệu ghế mặc định tại: roomID=" + roomID + ", showDate=" + showDate + ", showTime=" + showTime);
+                Log.d("SeatSelectionActivity", "Đã tạo dữ liệu ghế mặc định tại: roomID=" + roomID + ", showDate=" + showDate + ", showTime=" + showTime);
             } else if (!task.isSuccessful()) {
-                Log.e("SeatSelection", "Lỗi khi kiểm tra dữ liệu ghế mặc định: " + task.getException().getMessage());
+                Log.e("SeatSelectionActivity", "Lỗi khi kiểm tra dữ liệu ghế mặc định: " + task.getException().getMessage());
             }
         });
     }
@@ -355,6 +352,11 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
         totalPrice = 0;
         List<String> selectedSeats = new ArrayList<>();
 
+        if (seatList == null) {
+            Log.e("SeatSelectionActivity", "seatList is null in updateTotalPrice");
+            seatList = new ArrayList<>();
+        }
+
         for (Seat seat : seatList) {
             if (seat.getStatus().equals("selected")) {
                 totalPrice += seat.getPrice();
@@ -368,6 +370,10 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
 
     private List<String> getSelectedSeats() {
         List<String> selectedSeats = new ArrayList<>();
+        if (seatList == null) {
+            Log.e("SeatSelectionActivity", "seatList is null in getSelectedSeats");
+            seatList = new ArrayList<>();
+        }
         for (Seat seat : seatList) {
             if (seat.getStatus().equals("selected")) {
                 selectedSeats.add(seat.getRow() + String.valueOf(seat.getNumber()));
@@ -376,44 +382,35 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
         return selectedSeats;
     }
 
-//    private void showAgeConfirmationDialog(List<String> selectedSeats) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Xác nhận tuổi");
-//        builder.setMessage("Tôi xác nhận mua vé cho người xem từ 18 tuổi trở lên theo quy định của cục điện ảnh. " +
-//                "Tôi chắc chắn muốn mua " + selectedSeats.size() + " vé.");
-//        builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                String seatType = determineSeatTypes(selectedSeats);
-//
-//                // Chuyển sang PaymentActivity với startActivityForResult
-//                Intent intent = new Intent(SeatSelectionActivity.this, PaymentActivity.class);
-//                intent.putStringArrayListExtra("selectedSeats", new ArrayList<>(selectedSeats));
-//                intent.putExtra("totalPrice", totalPrice);
-//                intent.putExtra("seatType", seatType);
-//                intent.putExtra("movieID", movieID);
-//                intent.putExtra("showDate", showDate);
-//                intent.putExtra("showTime", showTime);
-//                intent.putExtra("roomID", roomID);
-//                intent.putExtra("poster", poster);
-//                startActivityForResult(intent, PAYMENT_REQUEST_CODE);
-//                dialog.dismiss();
-//            }
-//        });
-//        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        });
-//        builder.show();
-//    }
+    private void showAgeConfirmationDialog(List<String> selectedSeats) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Xác nhận tuổi");
+        builder.setMessage("Tôi xác nhận mua vé cho người xem từ 18 tuổi trở lên theo quy định của cục điện ảnh. " +
+                "Tôi chắc chắn muốn mua " + selectedSeats.size() + " vé.");
+        builder.setPositiveButton("Đồng ý", (dialog, which) -> {
+            String seatType = determineSeatTypes(selectedSeats);
+
+            Intent intent = new Intent(SeatSelectionActivity.this, PaymentActivity.class);
+            intent.putStringArrayListExtra("selectedSeats", new ArrayList<>(selectedSeats));
+            intent.putExtra("totalPrice", totalPrice);
+            intent.putExtra("seatType", seatType);
+            intent.putExtra("movieID", movieID);
+            intent.putExtra("showDate", showDate);
+            intent.putExtra("showTime", showTime);
+            intent.putExtra("roomID", roomID);
+            intent.putExtra("poster", poster);
+            startActivityForResult(intent, PAYMENT_REQUEST_CODE);
+            dialog.dismiss();
+        });
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, Intent.createChooser(data, null));
         if (requestCode == PAYMENT_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK && data != null) {
                 String paymentStatus = data.getStringExtra("payment_status");
                 if ("success".equals(paymentStatus)) {
                     Toast.makeText(this, "Thanh toán thành công! Ghế đã được đặt.", Toast.LENGTH_LONG).show();

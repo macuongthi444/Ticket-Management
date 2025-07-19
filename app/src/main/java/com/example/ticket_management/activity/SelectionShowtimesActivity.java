@@ -1,20 +1,27 @@
 package com.example.ticket_management.activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.icu.text.SimpleDateFormat;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.ticket_management.R;
+import com.example.ticket_management.DAO.MovieDAO;
 import com.example.ticket_management.adapter.DateAdapter;
 import com.example.ticket_management.adapter.SelectionShowtimeAdapter;
+import com.example.ticket_management.model.Movie;
 import com.example.ticket_management.model.ShowTime;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,8 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import lombok.NonNull;
+import java.util.function.Consumer;
 
 public class SelectionShowtimesActivity extends AppCompatActivity {
     private ImageView moviePoster;
@@ -45,7 +51,7 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
     private DatabaseReference showtimeRef;
     private String movieID;
     private String selectedDate; // Lưu ngày được chọn
-
+    private MovieDAO movieDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +59,12 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_showtime_selection);
 
         // Nhận movieID từ Intent
-         movieID = getIntent().getStringExtra("movie_id");
-//        movieID = "-OLXiZTDU72XoJkwhspK";
-//        if (movieID == null || movieID.isEmpty()) {
-//            Toast.makeText(this, "Không tìm thấy movieID.", Toast.LENGTH_LONG).show();
-//            finish();
-//            return;
-//        }
+        movieID = getIntent().getStringExtra("movie_id");
+        if (movieID == null || movieID.isEmpty()) {
+            Toast.makeText(this, "Không tìm thấy movieID.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         // Initialize views
         moviePoster = findViewById(R.id.movie_poster);
@@ -70,11 +75,48 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
         recyclerViewDates.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewShowtimes.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize Firebase
+        // Initialize Firebase and MovieDAO
         showtimeRef = FirebaseDatabase.getInstance().getReference("showTimes");
+        movieDao = new MovieDAO();
 
-        // Fetch data from Firebase
+        // Load movie poster
+        loadMoviePoster();
+
+        // Fetch showtimes from Firebase
         fetchShowtimes();
+    }
+
+    private void loadMoviePoster() {
+        if (movieID == null || movieID.isEmpty()) {
+            Log.e("SelectionShowtimes", "movieID is null or empty");
+            moviePoster.setImageResource(R.drawable.img_background);
+            Toast.makeText(SelectionShowtimesActivity.this, "movieID không hợp lệ.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        movieDao.getMovieById(movieID,
+                movie -> {
+                    if (movie != null) {
+                        String imageBase64 = movie.getImageBase64();
+                        if (imageBase64 != null && !imageBase64.isEmpty()) {
+                            Log.d("SelectionShowtimes", "Loading Base64 image for movie: " + movie.getMovieName());
+                            new LoadImageTask(moviePoster, movie.getMovieName()).execute(imageBase64);
+                        } else {
+                            Log.w("SelectionShowtimes", "No ImageBase64 for movie: " + movie.getMovieName());
+                            moviePoster.setImageResource(R.drawable.img_background);
+                            runOnUiThread(() -> Toast.makeText(SelectionShowtimesActivity.this, "Không tìm thấy poster cho phim này.", Toast.LENGTH_LONG).show());
+                        }
+                    } else {
+                        Log.e("SelectionShowtimes", "Movie is null");
+                        moviePoster.setImageResource(R.drawable.img_background);
+                        runOnUiThread(() -> Toast.makeText(SelectionShowtimesActivity.this, "Không tìm thấy thông tin phim.", Toast.LENGTH_LONG).show());
+                    }
+                },
+                error -> {
+                    Log.e("SelectionShowtimes", "Failed to load movie: " + error);
+                    moviePoster.setImageResource(R.drawable.img_background);
+                    runOnUiThread(() -> Toast.makeText(SelectionShowtimesActivity.this, "Lỗi tải poster: " + error, Toast.LENGTH_LONG).show());
+                });
     }
 
     private void fetchShowtimes() {
@@ -90,15 +132,13 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                     return;
                 }
 
-                String posterUrl = null;
                 for (DataSnapshot data : snapshot.getChildren()) {
                     ShowTime showTime = data.getValue(ShowTime.class);
                     if (showTime != null && movieID.equals(showTime.getMovieId())) {
                         String date = showTime.getShowDate();
                         String time = showTime.getShowTime();
-                        posterUrl = showTime.getPoster();
 
-                        Log.d("FirebaseData", "Date: " + date + ", Time: " + time + ", Poster: " + posterUrl);
+                        Log.d("FirebaseData", "Date: " + date + ", Time: " + time);
 
                         if (date != null && !date.isEmpty() && !dateList.contains(date)) {
                             dateList.add(date);
@@ -109,6 +149,7 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                         }
                     }
                 }
+
                 // Sắp xếp dateList theo thứ tự thời gian tăng dần
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                 Collections.sort(dateList, new Comparator<String>() {
@@ -127,6 +168,7 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
 
                 // Tạo displayDateList để hiển thị chỉ dd-MM
                 SimpleDateFormat displayFormat = new SimpleDateFormat("dd-MM", Locale.getDefault());
+                displayDateList.clear();
                 for (String date : dateList) {
                     try {
                         Date parsedDate = dateFormat.parse(date);
@@ -136,16 +178,6 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                         Log.e("DateFormatError", "Lỗi khi format ngày để hiển thị: " + e.getMessage());
                         displayDateList.add(date); // Nếu có lỗi, giữ nguyên ngày gốc
                     }
-                }
-
-                if (posterUrl != null && !posterUrl.isEmpty()) {
-                    Glide.with(SelectionShowtimesActivity.this)
-                            .load(posterUrl)
-                            .error(android.R.drawable.ic_menu_gallery)
-                            .into(moviePoster);
-                } else {
-                    Log.e("FirebaseData", "Poster URL is null or empty for movieID: " + movieID);
-                    Toast.makeText(SelectionShowtimesActivity.this, "Không tìm thấy poster cho phim này.", Toast.LENGTH_LONG).show();
                 }
 
                 Log.d("FirebaseData", "Dates: " + dateList.toString());
@@ -166,7 +198,6 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                     selectedDate = dateList.get(0); // Mặc định chọn ngày đầu tiên
                     List<String> showtimes = showtimesByDate.get(selectedDate);
                     if (showtimes != null && !showtimes.isEmpty()) {
-                        final String finalPosterUrl = posterUrl;
                         showtimeAdapter = new SelectionShowtimeAdapter(showtimes, showtime -> {
                             // Xử lý khi người dùng chọn khung giờ
                             ShowTime selectedShowTime = null;
@@ -183,7 +214,7 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                                 intent.putExtra("showDate", selectedDate);
                                 intent.putExtra("showTime", showtime);
                                 intent.putExtra("roomID", selectedShowTime.getRoomId());
-                                intent.putExtra("poster", finalPosterUrl);
+                                intent.putExtra("poster", selectedShowTime.getPoster()); // Truyền URL poster nếu cần
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(SelectionShowtimesActivity.this, "Không tìm thấy thông tin suất chiếu.", Toast.LENGTH_LONG).show();
@@ -204,5 +235,56 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                 Log.e("FirebaseError", error.getMessage());
             }
         });
+    }
+
+    // AsyncTask to decode Base64 and load Bitmap
+    private static class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
+        private final ImageView imageView;
+        private final String movieName;
+
+        LoadImageTask(ImageView imageView, String movieName) {
+            this.imageView = imageView;
+            this.movieName = movieName;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            String imageBase64 = params[0];
+            if (imageBase64 != null && !imageBase64.isEmpty()) {
+                try {
+                    byte[] decodedString = Base64.decode(imageBase64, Base64.DEFAULT);
+                    Log.d("SelectionShowtimes", "Base64 decoded for " + movieName + ", length: " + decodedString.length);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    if (bitmap != null) {
+                        Log.d("SelectionShowtimes", "Bitmap decoded successfully for " + movieName + ", size: " + bitmap.getWidth() + "x" + bitmap.getHeight());
+                        int targetHeight = 200 * imageView.getResources().getDisplayMetrics().densityDpi / 160;
+                        if (bitmap.getHeight() > targetHeight) {
+                            float scale = (float) targetHeight / bitmap.getHeight();
+                            bitmap = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * scale), targetHeight, true);
+                        }
+                        return bitmap;
+                    } else {
+                        Log.e("SelectionShowtimes", "Failed to decode Bitmap for " + movieName);
+                    }
+                } catch (Exception e) {
+                    Log.e("SelectionShowtimes", "Error decoding Base64 for " + movieName + ": " + e.getMessage());
+                }
+            } else {
+                Log.w("SelectionShowtimes", "No imageBase64 for movie: " + movieName);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (!((Activity) imageView.getContext()).isFinishing()) {
+                if (bitmap != null) {
+                    imageView.setImageBitmap(bitmap);
+                    imageView.invalidate();
+                } else {
+                    imageView.setImageResource(R.drawable.img_background);
+                }
+            }
+        }
     }
 }

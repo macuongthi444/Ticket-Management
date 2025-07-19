@@ -3,6 +3,9 @@ package com.example.ticket_management.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,17 +86,19 @@ public class ShowTimeAdapter extends RecyclerView.Adapter<ShowTimeAdapter.ShowTi
         holder.tvShowDate.setText("Ngày Chiếu: " + showTime.getShowDate());
         holder.tvShowTime.setText("Giờ Chiếu: " + showTime.getShowTime());
 
-        // Load poster bằng Glide
-        if (showTime.getPoster() != null && !showTime.getPoster().isEmpty()) {
-            Glide.with(context)
-                    .load(showTime.getPoster())
-                    .placeholder(R.drawable.ic_default_movie)
-                    .error(R.drawable.ic_default_movie)
-                    .into(holder.ivPoster);
-        } else {
-            holder.ivPoster.setImageResource(R.drawable.ic_menu_gallery);
-        }
 
+
+        if (showTime.getPoster() != null && !showTime.getPoster().isEmpty()) {
+            try {
+                byte[] decodedString = Base64.decode(showTime.getPoster(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                holder.ivPoster.setImageBitmap(decodedByte);
+            } catch (Exception e) {
+                holder.ivPoster.setImageResource(R.drawable.ic_menu_gallery);
+            }
+        } else {
+            holder.ivPoster.setImageResource(R.drawable.ic_default_movie);
+        }
         // Xử lý menu chỉnh sửa và xóa
         holder.imgMenu.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(context, holder.imgMenu);
