@@ -6,7 +6,7 @@
     android:padding="8dp">
 
     <ImageView
-        android:id="@+id/ivPoster"
+        android:id="@+id/imageBase64"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"

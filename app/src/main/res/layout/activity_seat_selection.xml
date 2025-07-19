@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Phần thông tin phim -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/movie_info_layout"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:background="#E0E0E0"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- Hình nền mờ của poster phim -->
+            <ImageView
+                android:id="@+id/movie_background"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/img_background"
+                android:scaleType="centerCrop"
+                android:alpha="0.8"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Phần thông tin trạng thái ghế -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="15dp"
+            android:id="@+id/seat_info_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/movie_info_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/seat_empty_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/seat_empty_color"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@android:color/darker_gray"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ghế trống"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toEndOf="@+id/seat_empty_color"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="8dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/seat_selected_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/seat_empty_layout"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/seat_selected_color"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@android:color/holo_blue_light"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ghế đang chọn"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toEndOf="@+id/seat_selected_color"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="8dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/seat_sold_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/seat_selected_layout"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/seat_sold_color"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@android:color/holo_red_light"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ghế đã bán"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toEndOf="@+id/seat_sold_color"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="8dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Thông tin giá ghế -->
+        <TextView
+            android:id="@+id/price_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Ghế thường: 65,000đ | Ghế VIP: 70,000đ | Ghế đôi: 140,000đ"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/seat_info_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Thời gian đếm ngược -->
+        <TextView
+            android:id="@+id/time_remaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thời gian còn lại: 05:00"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@+id/price_info"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Tiêu đề sơ đồ ghế -->
+        <TextView
+            android:id="@+id/seat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sơ đồ ghế"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/time_remaining"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <!-- RecyclerView cho sơ đồ ghế -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/seat_grid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintTop_toBottomOf="@+id/seat_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Phần ghế đã chọn và tổng tiền -->
+        <LinearLayout
+            android:id="@+id/seat_price_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/seat_grid"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/selected_seats"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Ghế đã chọn: "
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/total_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tổng tiền: 0đ"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="end"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tiếp tục"
+            app:layout_constraintTop_toBottomOf="@+id/seat_price_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

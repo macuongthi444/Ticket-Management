@@ -41,12 +41,26 @@ public class MovieDAO {
     private String convertImageToBase64(String imagePath) {
         try {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            if (bitmap == null) {
+                Log.e("MovieDAO", "Failed to decode image: " + imagePath);
+                return null;
+            }
+            // Giảm kích thước ảnh
+            int maxSize = 512; // Kích thước tối đa (pixel)
+            int width = bitmap.getWidth();
+            int height = bitmap.getHeight();
+            float scale = Math.min((float) maxSize / width, (float) maxSize / height);
+            if (scale < 1) {
+                bitmap = Bitmap.createScaledBitmap(bitmap, (int) (width * scale), (int) (height * scale), true);
+            }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos); // Tăng chất lượng lên 90
             byte[] byteArray = baos.toByteArray();
-            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+            String base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            Log.d("MovieDAO", "Base64 length for " + imagePath + ": " + base64.length());
+            return base64;
         } catch (Exception e) {
-            Log.e("MovieDAO", "Lỗi khi chuyển ảnh sang Base64: " + e.getMessage());
+            Log.e("MovieDAO", "Error converting image to Base64: " + e.getMessage());
             return null;
         }
     }

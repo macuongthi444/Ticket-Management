@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingHorizontal="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="#F5F5F5">
+
+    <!-- LEFT SIDE -->
+    <LinearLayout
+        android:id="@+id/layout_left"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="15dp"
+        android:layout_marginEnd="4dp"
+        android:background="@android:drawable/dialog_holo_light_frame"
+        android:elevation="2dp">
+
+        <ImageView
+            android:id="@+id/iv_showtime_left"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:contentDescription="Movie poster"
+            android:layerType="software"/>
+
+        <TextView
+            android:id="@+id/tv_name_movie_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên Phim 1"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:paddingTop="8dp"
+            android:textColor="#333333"/>
+
+    </LinearLayout>
+
+    <!-- RIGHT SIDE -->
+    <LinearLayout
+        android:id="@+id/layout_right"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="15dp"
+        android:layout_marginStart="4dp"
+        android:background="@android:drawable/dialog_holo_light_frame"
+        android:elevation="2dp">
+
+        <ImageView
+            android:id="@+id/iv_showtime_right"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:contentDescription="Movie poster"
+            android:layerType="software"/>
+
+        <TextView
+            android:id="@+id/tv_name_movie_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên Phim 2"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:paddingTop="8dp"
+            android:textColor="#333333"/>
+
+    </LinearLayout>
+</LinearLayout>

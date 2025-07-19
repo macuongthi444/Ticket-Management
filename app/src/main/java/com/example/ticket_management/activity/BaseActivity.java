@@ -25,6 +25,8 @@ import com.example.ticket_management.activity.Movie.MovieListActivity;
 import com.example.ticket_management.activity.Other.OtherActivity;
 import com.example.ticket_management.activity.Room.RoomListActivity;
 import com.example.ticket_management.activity.ShowTime.ShowTimeListActivity;
+import com.example.ticket_management.activity.ShowTime.ShowtimeUserListActivity;
+
 import com.example.ticket_management.DAO.AuthDAO;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -51,10 +53,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
         // Thiết lập layout dựa trên role
         if (role == 1) {
-            setContentView(R.layout.activity_menu); // Layout cho admin (Navigation Drawer)
+            setContentView(R.layout.activity_menu);
             setupNavigationDrawer();
         } else {
-            setContentView(R.layout.activity_bottom); // Layout cho user (BottomNavigationView)
+            setContentView(R.layout.activity_bottom);
             setupBottomNavigation();
         }
 
@@ -124,14 +126,18 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
     // Xác định tab tương ứng với Activity hiện tại
-//    private int getSelectedItemIdForCurrentActivity() {
-//        if (this instanceof TransactionHistoryActivity) {
+    private int getSelectedItemIdForCurrentActivity() {
+        if (this instanceof ShowtimeUserListActivity) {
+            return R.id.home; // Tab "Lịch Chiếu"
+        } else
+//            if (this instanceof TransactionHistoryActivity) {
 //            return R.id.hoadon; // Tab "Hóa Đơn"
-//        } else if (this instanceof OtherActivity) {
-//            return R.id.khac; // Tab "Khác"
-//        }
-//        return R.id.hoadon; // Mặc định là "Hóa Đơn"
-//    }
+//        } else
+            if (this instanceof OtherActivity) {
+            return R.id.khac; // Tab "Khác"
+        }
+        return R.id.home; // Mặc định là "Lịch Chiếu"
+    }
 
     // Thiết lập BottomNavigationView (cho user)
     private void setupBottomNavigation() {
@@ -153,11 +159,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             editor.putInt(PREF_SELECTED_ITEM, id);
             editor.apply();
 
-//            if (id == R.id.hoadon) {
+            if (id == R.id.home) {
+                openActivity(ShowtimeUserListActivity.class);
+            } else
+//                if (id == R.id.hoadon) {
 //                openActivity(TransactionHistoryActivity.class);
-//            } else if (id == R.id.khac) {
-//                openActivity(OtherActivity.class);
-//            }
+//            } else
+                if (id == R.id.khac) {
+                openActivity(OtherActivity.class);
+            }
 
             return true;
         });

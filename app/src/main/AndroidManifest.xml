@@ -71,6 +71,15 @@
         <activity
             android:name=".activity.ShowTime.AddShowTimeActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.ShowTime.ShowtimeUserListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SeatSelectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SelectionShowtimesActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

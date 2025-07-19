@@ -9,7 +9,8 @@ import android.view.Menu;
 import android.widget.Toast;
 
 import com.example.ticket_management.activity.Auth.LoginActivity;
-import com.example.ticket_management.activity.Other.OtherActivity;
+import com.example.ticket_management.activity.ShowTime.ShowtimeUserListActivity;
+
 import com.example.ticket_management.activity.MenuActivity;
 import com.example.ticket_management.config.FirebaseAuthManager;
 import com.example.ticket_management.model.User;
@@ -80,10 +81,10 @@ public class AuthDAO {
 
                                     // Chuyển đến màn hình chính
                                     Intent intent;
-                                    if (user.getRole() == 1) { // Role = 1 (admin) -> CategoryActivity
+                                    if (user.getRole() == 1) { // Role = 1 (admin)
                                         intent = new Intent(context, MenuActivity.class);
-                                    } else { // Role = 0 (user) -> ShowListActivity
-                                        intent = new Intent(context, OtherActivity.class);
+                                    } else { // Role = 0 (user)
+                                        intent = new Intent(context, ShowtimeUserListActivity.class);
                                     }
                                     context.startActivity(intent);
                                 } else {
@@ -172,7 +173,7 @@ public class AuthDAO {
 
         if (isLoggedIn) {
             // Người dùng đã đăng nhập, chuyển sang màn hình chính
-            Intent intent = new Intent(context, OtherActivity.class);
+            Intent intent = new Intent(context, ShowtimeUserListActivity.class);
             context.startActivity(intent);
         } else {
             // Người dùng chưa đăng nhập, giữ nguyên màn hình đăng nhập
