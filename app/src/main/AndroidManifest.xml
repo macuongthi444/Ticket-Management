@@ -80,6 +80,12 @@
         <activity
             android:name=".activity.SelectionShowtimesActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.PaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.TransactionHistoryActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

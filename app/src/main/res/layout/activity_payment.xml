@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Poster phim -->
+        <ImageView
+            android:id="@+id/movie_poster"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Movie Poster" />
+
+        <!-- Tiêu đề phim -->
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingTop="8dp"
+            android:text="Tên phim" />
+
+        <!-- Thông tin suất chiếu -->
+        <TextView
+            android:id="@+id/show_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:text="2D Phụ đề | Giờ chiếu | Ngày chiếu" />
+
+        <!-- Ngày chiếu -->
+        <TextView
+            android:id="@+id/show_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:text="Ngày: dd/MM/yyyy" />
+
+        <!-- Giờ chiếu -->
+        <TextView
+            android:id="@+id/show_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:text="Giờ: HH:mm" />
+
+        <!-- Phòng chiếu -->
+        <TextView
+            android:id="@+id/room_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:text="Phòng: P1" />
+
+        <!-- Loại ghế -->
+        <TextView
+            android:id="@+id/seat_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:text="Loại ghế: Ghế thường" />
+
+        <!-- Ghế đã chọn -->
+        <TextView
+            android:id="@+id/selected_seats_payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:text="Ghế đã chọn: A1, A2" />
+
+        <!-- Tổng tiền -->
+        <TextView
+            android:id="@+id/total_price_payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:text="Tổng tiền: 0đ" />
+
+        <!-- Thời gian còn lại -->
+        <TextView
+            android:id="@+id/time_remaining"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:text="Thời gian còn lại: 10:00" />
+
+        <!-- Nút xác nhận thanh toán -->
+        <Button
+            android:id="@+id/btn_payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Xác nhận thanh toán" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
