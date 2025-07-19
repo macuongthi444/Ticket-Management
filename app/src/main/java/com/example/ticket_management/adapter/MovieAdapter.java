@@ -58,12 +58,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             try {
                 byte[] decodedString = Base64.decode(movie.getImageBase64(), Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                holder.ivPoster.setImageBitmap(decodedByte);
+                holder.imageBase64.setImageBitmap(decodedByte);
             } catch (Exception e) {
-                holder.ivPoster.setImageResource(R.drawable.ic_default_movie);
+                holder.imageBase64.setImageResource(R.drawable.ic_default_movie);
             }
         } else {
-            holder.ivPoster.setImageResource(R.drawable.ic_default_movie);
+            holder.imageBase64.setImageResource(R.drawable.ic_default_movie);
         }
 
         holder.imgMenu.setOnClickListener(v -> {
@@ -113,12 +113,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivPoster, imgMenu;
+        ImageView imageBase64, imgMenu;
         TextView tvMovieName, tvReleaseDate, tvDirector;
 
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivPoster = itemView.findViewById(R.id.ivPoster);
+            imageBase64 = itemView.findViewById(R.id.imageBase64);
             tvMovieName = itemView.findViewById(R.id.tvMovieName);
             tvReleaseDate = itemView.findViewById(R.id.tvReleaseDate);
             tvDirector = itemView.findViewById(R.id.tvDirector);
