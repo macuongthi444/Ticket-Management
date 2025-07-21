@@ -1,6 +1,9 @@
 package com.example.ticket_management.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.ticket_management.R;
 import com.example.ticket_management.model.TransactionHistory;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
 
@@ -57,12 +56,15 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         // Hiển thị tổng giá
         holder.tvTotalPrice.setText("Tổng tiền: " + String.format("%,d", transaction.getTotalPrice()) + "đ");
 
-        // Hiển thị poster phim
+        // Hiển thị poster phim từ Base64
         if (transaction.getPoster() != null && !transaction.getPoster().isEmpty()) {
-            Glide.with(context)
-                    .load(transaction.getPoster())
-                    .placeholder(R.drawable.img_background)
-                    .into(holder.ivPoster);
+            try {
+                byte[] decodedString = Base64.decode(transaction.getPoster(), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                holder.ivPoster.setImageBitmap(decodedByte);
+            } catch (Exception e) {
+                holder.ivPoster.setImageResource(R.drawable.img_background);
+            }
         } else {
             holder.ivPoster.setImageResource(R.drawable.img_background);
         }
@@ -81,7 +83,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             super(itemView);
             tvMovieName = itemView.findViewById(R.id.tv_movie_name);
             tvShowDateTime = itemView.findViewById(R.id.tv_show_date_time);
-            tvRoomName = itemView.findViewById(R.id.tv_room_name); // Thay tvRoomId bằng tvRoomName
+            tvRoomName = itemView.findViewById(R.id.tv_room_name);
             tvSelectedSeats = itemView.findViewById(R.id.tv_selected_seats);
             tvTotalPrice = itemView.findViewById(R.id.tv_total_price);
             ivPoster = itemView.findViewById(R.id.iv_poster);
