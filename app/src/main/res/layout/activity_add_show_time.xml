@@ -1,142 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#ffffff"
     android:padding="16dp"
-    android:background="#fffff5"
     tools:context=".activity.ShowTime.AddShowTimeActivity">
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tạo xuất chiếu"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:layout_marginBottom="16dp"/>
 
-        <!-- Chọn phim -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chọn phim:"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"/>
-
-        <Spinner
-            android:id="@+id/spinnerMovie"
-            android:layout_width="match_parent"
-            android:background="@drawable/edit_text_border"
-            android:layout_height="40dp"
-            android:layout_marginBottom="16dp"/>
-
-        <!-- Chọn phòng -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chọn phòng:"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"/>
-
-        <Spinner
-            android:id="@+id/spinnerRoom"
-            android:layout_width="match_parent"
-            android:background="@drawable/edit_text_border"
-            android:layout_height="40dp"
-            android:layout_marginBottom="16dp"/>
-
-
-        <!-- Ngày chiếu và giờ chiếu -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-
-            <!-- Ngày chiếu -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginEnd="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ngày chiếu:"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
-
-                <TextView
-                    android:id="@+id/tvShowDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="dd-mm-yyyy"
-                    android:padding="12dp"
-                    android:background="@drawable/edit_text_border"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:clickable="true"
-                    android:focusable="true"/>
-            </LinearLayout>
-
-            <!-- Giờ chiếu -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Giờ chiếu:"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
-
-                <TextView
-                    android:id="@+id/tvShowTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="hh:mm"
-                    android:padding="12dp"
-                    android:background="@drawable/edit_text_border"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:clickable="true"
-                    android:focusable="true"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Nút Tạo và Hủy -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:text="Tạo xuất chiếu"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="12dp" />
 
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FF0000"
-            android:textColor="@android:color/white"
-            android:layout_marginEnd="8dp"
-            android:text="Hủy" />
+    <TextView
+        android:id="@+id/tvMovieLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phim:"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="6dp" />
 
-        <Button
-            android:id="@+id/btnSave"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#D4A017"
-            android:textColor="@android:color/white"
-            android:text="Lưu"/>
+    <Spinner
+        android:id="@+id/spinnerMovie"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:background="@drawable/edit_text_border"
+        app:layout_constraintTop_toBottomOf="@id/tvMovieLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="12dp" />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tvRoomLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phòng:"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/spinnerMovie"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="6dp" />
 
-</LinearLayout>
+    <Spinner
+        android:id="@+id/spinnerRoom"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:background="@drawable/edit_text_border"
+        app:layout_constraintTop_toBottomOf="@id/tvRoomLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/tvShowDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ngày chiếu:"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/spinnerRoom"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="6dp" />
+
+    <TextView
+        android:id="@+id/tvShowDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="dd-mm-yyyy"
+        android:padding="10dp"
+        android:background="@drawable/edit_text_border"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toBottomOf="@id/tvShowDateLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tvShowTime"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/tvShowTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Giờ chiếu:"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/spinnerRoom"
+        app:layout_constraintStart_toEndOf="@id/tvShowDate"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="6dp" />
+
+    <TextView
+        android:id="@+id/tvShowTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="hh:mm"
+        android:padding="10dp"
+        android:background="@drawable/edit_text_border"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toBottomOf="@id/tvShowTimeLabel"
+        app:layout_constraintStart_toEndOf="@id/tvShowDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF0000"
+        android:textColor="@android:color/white"
+        android:text="Hủy"
+        app:layout_constraintTop_toBottomOf="@id/tvShowDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnSave"
+        android:layout_marginEnd="8dp" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#D4A017"
+        android:textColor="@android:color/white"
+        android:text="Lưu"
+        app:layout_constraintTop_toBottomOf="@id/tvShowTime"
+        app:layout_constraintStart_toEndOf="@id/btnCancel"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,14 @@
 package com.example.ticket_management.activity;
 
+import static com.example.ticket_management.R.layout.activity_seat_selection;
+
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.ticket_management.R;
 import com.example.ticket_management.adapter.SeatAdapter;
 import com.example.ticket_management.model.Seat;
@@ -55,7 +59,7 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_seat_selection);
+        setContentView(activity_seat_selection);
 
         // Nhận dữ liệu từ Intent
         movieID = getIntent().getStringExtra("movieID");
@@ -80,12 +84,19 @@ public class SeatSelectionActivity extends AppCompatActivity implements SeatAdap
         continueButton = findViewById(R.id.btn_continue);
         movieBackground = findViewById(R.id.movie_background);
 
-        // Hiển thị poster
+        // Hiển thị poster từ Base64 giống MovieAdapter
         if (poster != null && !poster.isEmpty()) {
-            Glide.with(this).load(poster).error(R.drawable.img_background).into(movieBackground);
+            try {
+                byte[] decodedString = Base64.decode(poster, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                movieBackground.setImageBitmap(decodedByte);
+            } catch (Exception e) {
+                movieBackground.setImageResource(R.drawable.img_background);
+                Log.e("SeatSelectionActivity", "Error decoding Base64 poster: " + e.getMessage());
+            }
         } else {
             movieBackground.setImageResource(R.drawable.img_background);
-            Log.e("SeatSelectionActivity", "Poster URL is null or empty");
+            Log.w("SeatSelectionActivity", "Poster is null or empty");
         }
 
         // Khởi tạo Firebase
