@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,20 +38,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class SelectionShowtimesActivity extends AppCompatActivity {
     private ImageView moviePoster;
+    private TextView movieTitle; // Added for movie title
+    private TextView movieDescription; // Added for movie description
     private RecyclerView recyclerViewDates, recyclerViewShowtimes;
     private DateAdapter dateAdapter;
     private SelectionShowtimeAdapter showtimeAdapter;
-    private List<String> dateList = new ArrayList<>(); // Lưu ngày đầy đủ (dd-MM-yyyy)
-    private List<String> displayDateList = new ArrayList<>(); // Lưu ngày để hiển thị (dd-MM)
+    private List<String> dateList = new ArrayList<>();
+    private List<String> displayDateList = new ArrayList<>();
     private Map<String, List<String>> showtimesByDate = new HashMap<>();
-    private Map<String, List<ShowTime>> showtimesByDateFull = new HashMap<>(); // Lưu toàn bộ thông tin ShowTime
+    private Map<String, List<ShowTime>> showtimesByDateFull = new HashMap<>();
     private DatabaseReference showtimeRef;
     private String movieID;
-    private String selectedDate; // Lưu ngày được chọn
+    private String selectedDate;
     private MovieDAO movieDao;
 
     @Override
@@ -68,6 +70,8 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
 
         // Initialize views
         moviePoster = findViewById(R.id.movie_poster);
+        movieTitle = findViewById(R.id.movie_title); // Initialize movie title TextView
+        movieDescription = findViewById(R.id.movie_description); // Initialize movie description TextView
         recyclerViewDates = findViewById(R.id.recycler_view_dates);
         recyclerViewShowtimes = findViewById(R.id.recycler_view_showtimes);
 
@@ -79,17 +83,19 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
         showtimeRef = FirebaseDatabase.getInstance().getReference("showTimes");
         movieDao = new MovieDAO();
 
-        // Load movie poster
-        loadMoviePoster();
+        // Load movie details
+        loadMovieDetails();
 
         // Fetch showtimes from Firebase
         fetchShowtimes();
     }
 
-    private void loadMoviePoster() {
+    private void loadMovieDetails() {
         if (movieID == null || movieID.isEmpty()) {
             Log.e("SelectionShowtimes", "movieID is null or empty");
             moviePoster.setImageResource(R.drawable.img_background);
+            movieTitle.setText("Unknown Movie");
+            movieDescription.setText("No description available.");
             Toast.makeText(SelectionShowtimesActivity.this, "movieID không hợp lệ.", Toast.LENGTH_LONG).show();
             return;
         }
@@ -97,6 +103,11 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
         movieDao.getMovieById(movieID,
                 movie -> {
                     if (movie != null) {
+                        // Set movie title and description
+                        movieTitle.setText(movie.getMovieName() != null ? movie.getMovieName() : "Unknown Movie");
+                        movieDescription.setText(movie.getDescription() != null ? movie.getDescription() : "No description available.");
+
+                        // Load movie poster
                         String imageBase64 = movie.getImageBase64();
                         if (imageBase64 != null && !imageBase64.isEmpty()) {
                             Log.d("SelectionShowtimes", "Loading Base64 image for movie: " + movie.getMovieName());
@@ -109,13 +120,17 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                     } else {
                         Log.e("SelectionShowtimes", "Movie is null");
                         moviePoster.setImageResource(R.drawable.img_background);
+                        movieTitle.setText("Unknown Movie");
+                        movieDescription.setText("No description available.");
                         runOnUiThread(() -> Toast.makeText(SelectionShowtimesActivity.this, "Không tìm thấy thông tin phim.", Toast.LENGTH_LONG).show());
                     }
                 },
                 error -> {
                     Log.e("SelectionShowtimes", "Failed to load movie: " + error);
                     moviePoster.setImageResource(R.drawable.img_background);
-                    runOnUiThread(() -> Toast.makeText(SelectionShowtimesActivity.this, "Lỗi tải poster: " + error, Toast.LENGTH_LONG).show());
+                    movieTitle.setText("Unknown Movie");
+                    movieDescription.setText("No description available.");
+                    runOnUiThread(() -> Toast.makeText(SelectionShowtimesActivity.this, "Lỗi tải thông tin phim: " + error, Toast.LENGTH_LONG).show());
                 });
     }
 
@@ -158,10 +173,10 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                         try {
                             Date d1 = dateFormat.parse(date1);
                             Date d2 = dateFormat.parse(date2);
-                            return d1.compareTo(d2); // Sắp xếp tăng dần
+                            return d1.compareTo(d2);
                         } catch (Exception e) {
                             Log.e("DateSortError", "Lỗi khi parse ngày: " + e.getMessage());
-                            return 0; // Nếu có lỗi, giữ nguyên thứ tự
+                            return 0;
                         }
                     }
                 });
@@ -176,7 +191,7 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                         displayDateList.add(displayDate);
                     } catch (Exception e) {
                         Log.e("DateFormatError", "Lỗi khi format ngày để hiển thị: " + e.getMessage());
-                        displayDateList.add(date); // Nếu có lỗi, giữ nguyên ngày gốc
+                        displayDateList.add(date);
                     }
                 }
 
@@ -187,7 +202,7 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                     Toast.makeText(SelectionShowtimesActivity.this, "Không có ngày chiếu nào cho phim này.", Toast.LENGTH_LONG).show();
                 } else {
                     dateAdapter = new DateAdapter(dateList, date -> {
-                        selectedDate = date; // Lưu ngày được chọn
+                        selectedDate = date;
                         List<String> showtimes = showtimesByDate.get(date);
                         showtimeAdapter.updateShowtimes(showtimes != null ? showtimes : new ArrayList<>());
                     });
@@ -195,11 +210,10 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                 }
 
                 if (!dateList.isEmpty()) {
-                    selectedDate = dateList.get(0); // Mặc định chọn ngày đầu tiên
+                    selectedDate = dateList.get(0);
                     List<String> showtimes = showtimesByDate.get(selectedDate);
                     if (showtimes != null && !showtimes.isEmpty()) {
                         showtimeAdapter = new SelectionShowtimeAdapter(showtimes, showtime -> {
-                            // Xử lý khi người dùng chọn khung giờ
                             ShowTime selectedShowTime = null;
                             for (ShowTime st : showtimesByDateFull.get(selectedDate)) {
                                 if (st.getShowTime().equals(showtime)) {
@@ -214,7 +228,7 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
                                 intent.putExtra("showDate", selectedDate);
                                 intent.putExtra("showTime", showtime);
                                 intent.putExtra("roomID", selectedShowTime.getRoomId());
-                                intent.putExtra("poster", selectedShowTime.getPoster()); // Truyền URL poster nếu cần
+                                intent.putExtra("poster", selectedShowTime.getPoster());
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(SelectionShowtimesActivity.this, "Không tìm thấy thông tin suất chiếu.", Toast.LENGTH_LONG).show();
@@ -237,7 +251,6 @@ public class SelectionShowtimesActivity extends AppCompatActivity {
         });
     }
 
-    // AsyncTask to decode Base64 and load Bitmap
     private static class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
         private final ImageView imageView;
         private final String movieName;

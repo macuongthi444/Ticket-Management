@@ -1,22 +1,23 @@
 package com.example.ticket_management.adapter;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ticket_management.R;
 
 import java.util.List;
 
-import lombok.NonNull;
-
-public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder>  {
+public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder> {
     private List<String> dates;
     private OnDateClickListener onDateClickListener;
+    private int selectedPosition = 0; // Default to first item
 
     // Constructor
     public DateAdapter(List<String> dates, OnDateClickListener listener) {
@@ -47,8 +48,15 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
             // Ẩn dayText vì không cần hiển thị thứ
             holder.dayText.setVisibility(View.GONE);
 
+            // Highlight selected date
+            holder.itemView.setBackgroundColor(position == selectedPosition ? Color.LTGRAY : Color.WHITE);
+
             // Xử lý sự kiện click
             holder.itemView.setOnClickListener(v -> {
+                int previousPosition = selectedPosition;
+                selectedPosition = holder.getAdapterPosition();
+                notifyItemChanged(previousPosition); // Update previous item
+                notifyItemChanged(selectedPosition); // Update current item
                 Log.d("DateAdapter", "Date clicked: " + date);
                 onDateClickListener.onDateClick(date);
             });
@@ -56,6 +64,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
             Log.e("DateAdapter", "Error parsing date: " + date, e);
             holder.dateText.setText("N/A");
             holder.dayText.setVisibility(View.GONE);
+            holder.itemView.setBackgroundColor(Color.WHITE);
         }
     }
 
