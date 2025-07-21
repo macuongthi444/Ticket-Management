@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="selected_item_color">#6200EE</color> <!-- Color when item is selected -->
+    <color name="unselected_item_color">#231709</color> <!-- Default item color -->
+    <color name="ripple_color">#33FFFFFF</color> <!-- Subtle ripple effect -->
+    <color name="white">#FFFFFF</color>
 </resources>
