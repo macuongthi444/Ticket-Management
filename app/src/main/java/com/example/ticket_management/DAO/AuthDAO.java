@@ -12,6 +12,7 @@ import com.example.ticket_management.activity.Auth.LoginActivity;
 import com.example.ticket_management.activity.ShowTime.ShowtimeUserListActivity;
 
 import com.example.ticket_management.activity.MenuActivity;
+import com.example.ticket_management.activity.StatisticActivity;
 import com.example.ticket_management.config.FirebaseAuthManager;
 import com.example.ticket_management.model.User;
 import com.google.firebase.auth.AuthCredential;
@@ -82,7 +83,7 @@ public class AuthDAO {
                                     // Chuyển đến màn hình chính
                                     Intent intent;
                                     if (user.getRole() == 1) { // Role = 1 (admin)
-                                        intent = new Intent(context, MenuActivity.class);
+                                        intent = new Intent(context, StatisticActivity.class);
                                     } else { // Role = 0 (user)
                                         intent = new Intent(context, ShowtimeUserListActivity.class);
                                     }

@@ -86,6 +86,9 @@
         <activity
             android:name=".activity.TransactionHistoryActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.StatisticActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
