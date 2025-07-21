@@ -44,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:background="#B3E5FC"
                 android:padding="24dp">
 
                 <!-- Back Button -->
@@ -230,8 +231,8 @@
                     android:layout_height="56dp"
                     android:layout_marginBottom="16dp"
                     android:text="ĐĂNG KÝ"
-                    app:backgroundTint="#757575"
                     android:textColor="@android:color/white"
+                    app:backgroundTint="@android:color/holo_red_dark"
                     app:cornerRadius="8dp" />
 
                 <!-- Login Link -->

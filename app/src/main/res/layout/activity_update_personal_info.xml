@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="#B3E5FC">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,8 +61,8 @@
             android:id="@+id/btnSaveInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/holo_red_dark"
             android:text="Lưu thay đổi"
-            android:backgroundTint="#388E3C"
             android:textColor="#fff" />
     </LinearLayout>
 </ScrollView> 

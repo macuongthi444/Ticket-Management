@@ -1,7 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fffff5">
+    android:background="#B3E5FC">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,11 +33,11 @@
             android:id="@+id/btnSelectPoster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn Ảnh Poster"
-            android:backgroundTint="#27A4F2"
-            android:textColor="@android:color/white"
             android:layout_gravity="center"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@android:color/holo_orange_light"
+            android:text="Chọn Ảnh Poster"
+            android:textColor="@android:color/white" />
 
         <EditText
             android:id="@+id/edtMovieName"
@@ -93,18 +93,18 @@
                 android:id="@+id/btnCancel"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#FF0000"
-                android:textColor="@android:color/white"
                 android:layout_marginEnd="8dp"
-                android:text="Hủy" />
+                android:backgroundTint="@color/black"
+                android:text="Hủy"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/btnSave"
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#D4A017"
-                android:textColor="@android:color/white"
-                android:text="Lưu"/>
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:text="Lưu"
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 

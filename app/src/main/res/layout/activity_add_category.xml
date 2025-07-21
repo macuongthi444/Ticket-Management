@@ -7,8 +7,9 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".activity.Category.AddCategoryActivity"
-    android:background="#fffff5"
+    android:background="#B3E5FC"
     >
+
 
     <TextView
         android:id="@+id/tvTitle"
@@ -50,20 +51,22 @@
             android:id="@+id/btnCancel"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FF0000"
-            android:textColor="@android:color/white"
             android:layout_marginRight="20dp"
-            android:text="Hủy" />
+            android:backgroundTint="@color/material_dynamic_neutral_variant0"
+            android:text="Hủy"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/btnSave"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_marginLeft="20dp"
-            android:backgroundTint="#D4A017"
-            android:textColor="@android:color/white"
-            android:text="Luu" />
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@android:color/system_error_light"
+            android:text="Luu"
+            android:textColor="@android:color/white" />
+
+
 
 
 

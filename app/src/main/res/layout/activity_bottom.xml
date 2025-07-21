@@ -26,6 +26,7 @@
         android:id="@+id/frmHienthi"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="#B3E5FC"
         android:layout_weight="1" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="63dp"
         android:layout_gravity="bottom"
-        android:background="#ffffff"
+        android:background="#0288D1"
         app:labelVisibilityMode="labeled"
         app:itemTextColor="#231709"
         app:itemIconTint="#231709"

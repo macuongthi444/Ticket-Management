@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginTop="50dp"
+    android:background="#B3E5FC"
     android:padding="16dp">
 
     <TextView
@@ -56,17 +57,17 @@
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/black"
             android:text="Hủy"
-            android:backgroundTint="#B0BEC5"
-            android:textColor="#FFFFFF"
-            android:layout_marginEnd="8dp" />
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/btnUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/holo_red_dark"
             android:text="Cập nhật"
-            android:backgroundTint="#4A90E2"
             android:textColor="#FFFFFF" />
     </LinearLayout>
 </LinearLayout>
