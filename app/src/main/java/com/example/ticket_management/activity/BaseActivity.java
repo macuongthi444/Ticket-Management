@@ -24,6 +24,7 @@ import com.example.ticket_management.activity.Other.OtherActivity;
 import com.example.ticket_management.activity.Room.RoomListActivity;
 import com.example.ticket_management.activity.ShowTime.ShowTimeListActivity;
 import com.example.ticket_management.activity.ShowTime.ShowtimeUserListActivity;
+import com.example.ticket_management.activity.StatisticActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -193,6 +194,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             openActivity(ShowTimeListActivity.class);
         } else if (id == R.id.Logout) {
             authDAO.logout(BaseActivity.this);
+        }else if (id==R.id.TKDT){
+            openActivity(StatisticActivity.class);
         }
 
         if (drawerLayout != null) {
