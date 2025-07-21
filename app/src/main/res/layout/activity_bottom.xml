@@ -31,12 +31,13 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/btnNavigation"
         android:layout_width="match_parent"
-        android:layout_height="63dp"
+        android:layout_height="43dp"
         android:layout_gravity="bottom"
-        android:background="#ffffff"
+        android:background="#FFFFFF"
         app:labelVisibilityMode="labeled"
-        app:itemTextColor="#231709"
-        app:itemIconTint="#231709"
-        app:menu="@menu/menu"/>
+        app:itemTextColor="@color/nav_item_ripple"
+        app:itemIconTint="@color/nav_item_ripple"
+        app:itemRippleColor="@color/nav_item_ripple"
+        app:menu="@menu/menu" />
 
 </LinearLayout>
